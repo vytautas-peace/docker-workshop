@@ -10,7 +10,7 @@ What's the version of pip in the image?
 * 24.2.1  
 * 23.3.1  
   
-```shell
+```console
 docker run -it \
     --rm \
     --entrypoint=bash \
