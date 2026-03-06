@@ -70,7 +70,7 @@ Pgadmin connects to the database vm with name postgres. Port is the rightmost po
 1. Start a fresh Git Codespace 
 2. Create homework dir & copy files from docker workshop:  
   
-```shell
+```console
 .python-version
 docker-compose.yaml
 pyproject.toml
@@ -78,29 +78,29 @@ pyproject.toml
   
 3. Start db & pgadmin 
   
-```shell
+```console
 docker-compose up -d
 ```
   
 4. Install uv  
   
-```shell
+```console
 pip install uv
 ```
 
 5. Get data  
   
-```shell
+```console
 wget https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-11.parquet
 ```
 
-```shell
+```console
 wget https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv
 ```
   
 5. Run jupyter & login
   
-```shell
+```console
 uv run jupyter notebook
 ```
   
