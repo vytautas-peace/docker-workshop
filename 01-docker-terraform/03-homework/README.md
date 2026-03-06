@@ -10,7 +10,7 @@ What's the version of pip in the image?
 * 24.2.1  
 * 23.3.1  
   
-```bash
+```shell
 docker run -it \
     --rm \
     --entrypoint=bash \
@@ -31,7 +31,7 @@ Given the following docker-compose.yaml, what is the hostname and port that pgad
 
 **If multiple answers are correct, select any**  
 
-```docker-compose
+```yaml
 services:
   db:
     container_name: postgres
@@ -70,7 +70,7 @@ Pgadmin connects to the database vm with name postgres. Port is the rightmost po
 1. Start a fresh Git Codespace 
 2. Create homework dir & copy files from docker workshop:  
   
-```
+```shell
 .python-version
 docker-compose.yaml
 pyproject.toml
@@ -78,29 +78,29 @@ pyproject.toml
   
 3. Start db & pgadmin 
   
-```bash
+```shell
 docker-compose up -d
 ```
   
 4. Install uv  
   
-```bash
+```shell
 pip install uv
 ```
 
 5. Get data  
   
-```bash
+```shell
 wget https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2025-11.parquet
 ```
 
-```bash
+```shell
 wget https://github.com/DataTalksClub/nyc-tlc-data/releases/download/misc/taxi_zone_lookup.csv
 ```
   
 5. Run jupyter & login
   
-```bash
+```shell
 uv run jupyter notebook
 ```
   
@@ -254,7 +254,7 @@ Note: it's tip , not trip. We need the name of the zone, not the ID.
 * East Harlem North  
 * LaGuardia Airport  
   
-```postgres
+```sql
 WITH zone_totals AS (
     SELECT 
         puz."Zone" AS pickup_zone,
