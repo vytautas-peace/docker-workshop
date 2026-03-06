@@ -254,7 +254,7 @@ Note: it's tip , not trip. We need the name of the zone, not the ID.
 * East Harlem North  
 * LaGuardia Airport  
   
-```postgresql
+```sql
 WITH zone_totals AS (
     SELECT 
         puz."Zone" AS pickup_zone,
