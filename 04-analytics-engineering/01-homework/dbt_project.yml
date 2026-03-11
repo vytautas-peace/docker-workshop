@@ -1,0 +1,26 @@
+name: 'taxi_rides_ny'
+version: '1.0.0'
+config-version: 2
+
+profile: 'taxi_rides_ny'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
+
+dbt-cloud:
+  project-id: 70471823562720
+  account-host: lw292.us1.dbt.com
+
+models:
+  taxi_rides_ny:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: view
+    marts:
+      +materialized: table
+      reporting:
+        +materialized: table
