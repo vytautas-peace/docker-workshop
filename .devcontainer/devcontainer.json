@@ -13,7 +13,7 @@
     "ghcr.io/devcontainers/features/terraform:1": {}
   },
 
-  "postCreateCommand": "curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update",
+  "postCreateCommand": "curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update && curl -LsSf https://getbruin.com/install/cli | sh",
 
   "customizations": {
     "vscode": {
