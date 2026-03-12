@@ -1,0 +1,23 @@
+{
+  "name": "Data Engineering Zoomcamp",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/terraform:1": {}
+  },
+
+  "onCreateCommand": "curl -fsSL https://github.com/dbt-labs/dbt-cli/releases/latest/download/dbt_linux-amd64.tar.gz -o /tmp/dbt.tar.gz && tar -xz -C /usr/local/bin -f /tmp/dbt.tar.gz dbt",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bruin.bruin",
+        "ms-azuretools.vscode-docker",
+        "hashicorp.terraform",
+        "innoverio.vscode-dbt-power-user",
+        "ms-python.python"
+      ]
+    }
+  }
+}
