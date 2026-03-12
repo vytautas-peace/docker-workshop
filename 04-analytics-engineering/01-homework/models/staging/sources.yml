@@ -97,6 +97,25 @@ sources:
             description: Total amount charged
         config:
           loaded_at_field: tpep_pickup_datetime
+      - name: fhv_tripdata
+        description: Raw for-hire vehicle trip records
+        columns:
+          - name: dispatching_base_num
+            description: Dispatching base number
+          - name: pickup_datetime
+            description: Date and time when the meter was engaged
+          - name: dropOff_datetime
+            description: Date and time when the meter was disengaged
+          - name: PUlocationID
+            description: TLC Taxi Zone where the meter was engaged
+          - name: DOlocationID
+            description: TLC Taxi Zone where the meter was disengaged
+          - name: SR_Flag
+            description: Shared ride flag
+          - name: Affiliated_base_number
+            description: Affiliated base number
+        config:
+          loaded_at_field: pickup_datetime
     config:
       freshness:
         warn_after: {count: 24, period: hour}
