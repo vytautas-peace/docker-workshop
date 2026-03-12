@@ -3,11 +3,17 @@
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
   "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11"
+		},
+    "ghcr.io/dhoeric/features/google-cloud-cli:1": {
+      "version": "latest"
+		},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/terraform:1": {}
   },
 
-  "onCreateCommand": "LATEST=$(curl -fsSL https://api.github.com/repos/dbt-labs/dbt-cli/releases/latest | grep '\"tag_name\"' | cut -d'\"' -f4) && VER=${LATEST#v} && curl -fsSL https://github.com/dbt-labs/dbt-cli/releases/download/${LATEST}/dbt_${VER}_linux_amd64.tar.gz -o /tmp/dbt.tar.gz && sudo tar -xz -C /usr/local/bin -f /tmp/dbt.tar.gz dbt",
+  "postCreateCommand": "curl -fsSL https://public.cdn.getdbt.com/fs/install/install.sh | sh -s -- --update",
 
   "customizations": {
     "vscode": {
@@ -15,7 +21,7 @@
         "bruin.bruin",
         "ms-azuretools.vscode-docker",
         "hashicorp.terraform",
-        "innoverio.vscode-dbt-power-user",
+        "dbtlabsinc.dbt",
         "ms-python.python"
       ]
     }
