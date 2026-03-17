@@ -217,3 +217,5 @@ logs/queries
 
 .tables
 duckdb.db
+*.crc
+_SUCCESS

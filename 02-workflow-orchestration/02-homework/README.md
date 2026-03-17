@@ -1,10 +1,6 @@
-# Data Engineering Zoomcamp - Homework 1 - Docker & Terraform
-
-
-## Quiz Questions
+# Data Engineering Zoomcamp - Homework 2 - Workflow Orchestration with Kestra
 
 Complete the quiz shown below. It's a set of 6 multiple-choice questions to test your understanding of workflow orchestration, Kestra, and ETL pipelines.
-
 
 ## 1. Within the execution for `Yellow` Taxi data for the year `2020` and month `12`: what is the uncompressed file size (i.e. the output file `yellow_tripdata_2020-12.csv` of the `extract` task)?
 
@@ -21,14 +17,12 @@ Also can be looked up while Kestra is running the flow.
 
 The size of the csv is 134.5 MB = 128.3 MiB.
 
-
 ## 2. What is the rendered value of the variable `file` when the inputs `taxi` is set to `green`, `year` is set to `2020`, and `month` is set to `04`during execution?
 
 - `{{inputs.taxi}}_tripdata_{{inputs.year}}-{{inputs.month}}.csv`
 - **`green_tripdata_2020-04.csv`**
 - `green_tripdata_04_2020.csv`
 - `green_tripdata_2020.csv`
-
 
 ## 3. How many rows are there for the `Yellow` Taxi data for all CSV files in the year 2020?
 
@@ -46,7 +40,6 @@ where
 	filename like 'yellow_tripdata_2020%'
 ```
 
-
 ## 4. How many rows are there for the `Green` Taxi data for all CSV files in the year 2020?
 
 - 5,327,301
@@ -63,7 +56,6 @@ where
 	filename like 'green_tripdata_2020%'
 ```
 
-
 ## 5. How many rows are there for the `Yellow` Taxi data for the March 2021 CSV file?
 
 - 1,428,092
@@ -79,7 +71,6 @@ from
 where
 	filename like 'yellow_tripdata_2021_03%'
 ```
-
 
 ## 6. How would you configure the timezone to New York in a Schedule trigger?
 
