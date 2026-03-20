@@ -1,43 +1,26 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# A parametrised Python data processing script for running either:
-#   (1) on local Spark Cluster or
-#   (2) on a Dataproc Spark cluster on GCP
+# A parametrised Python data processing script for running on GCP Dapaproc Spark cluster and writing data into BigQuery.
 
 """
 HOW TO RUN:
 
-LOCALLY:
+GCloud:
 
-"$SPARK_HOME/sbin/start-master.sh"
-"$SPARK_HOME/sbin/start-worker.sh"
+# Copy script to a GS location:
+gsutil cp 09_spark_bigquery.py gs://nyc-tlc-data-lake/code
 
-URL="spark://de-zoomcamp.europe-west1-b.c.de-zoomcamp-489904.internal:7077" # From Spark Master URL
-
-park-submit \
-    --master="${URL}" \
-    06_spark_local.py \
-    --input_green=data/raw/green/2020/*/ \
-    --input_yellow=data/raw/yellow/2020/*/ \
-    --lookup=data/raw/
-    --output=data/report/report-2020
-
- "$SPARK_HOME/sbin/stop-all.sh"
-
-================================
-
-GCLOUD:
-
+# Submit job to dataproc:
 gcloud dataproc jobs submit pyspark \
     --cluster=de-zoomcamp-cluster \
     --region europe-west2 \
-    gs://nyc-tlc-data-lake/code/08_spark_cluster.py \
+    gs://nyc-tlc-data-lake/code/09_spark_bigquery.py \
     -- \
     --input_green=gs://nyc-tlc-data-lake/pq/green/2021/*/ \
     --input_yellow=gs://nyc-tlc-data-lake/pq/yellow/2021/*/ \
     --lookup=gs://nyc-tlc-data-lake/ \
-    --output=gs://nyc-tlc-data-lake/output-2021/  
+    --output=nytaxi.report-2021 
 
 """
 
@@ -70,10 +53,16 @@ try:
         .appName('test') \
         .getOrCreate()
 
+    # Get the Hadoop configuration from the underlying Spark Context
+    conf = spark._jsc.hadoopConfiguration()
+
+    # Extract the default Dataproc bucket name
+    # This property is automatically set by Dataproc on the cluster nodes
+    temporaryGcsBucket = conf.get("fs.gs.system.bucket")
+
+
     # Run this right after creating your 'spark' session
     spark.sparkContext.setLogLevel("ERROR")
-
-
 
     # Read green data, normalise column names, register a table for running SQL.
     df_green = spark.read.parquet(input_green)
@@ -100,8 +89,8 @@ try:
         1, 2;
     """)
 
-    # Write results to file.
-    df_green_revenue.coalesce(1).write.parquet(f'{output}/green', mode='overwrite')
+    # Write results to file disabled for intermediate outputs.
+    # df_green_revenue.coalesce(1).write.parquet(f'{output}/green', mode='overwrite')
 
     # Read yellow data, normalise column names, register a table for running SQL.
     df_yellow = spark.read.parquet(input_yellow)
@@ -128,12 +117,13 @@ try:
         1, 2;
     """)
 
-    # Write results to file.
-    df_yellow_revenue.coalesce(1).write.parquet(f'{output}/yellow', mode='overwrite')
+    # Write results to file disabled for intermediate outputs.
+    # df_yellow_revenue.coalesce(1).write.parquet(f'{output}/yellow', mode='overwrite')
 
     # Outer join & write to file.
     df_join = df_green_revenue.join(df_yellow_revenue, on=['hour', 'zone_id'], how='outer')
-    df_join.coalesce(1).write.parquet(f'{output}/total', mode='overwrite')
+    # Write results to file disabled for intermediate outputs.
+    # df_join.coalesce(1).write.parquet(f'{output}/total', mode='overwrite')
 
     # Load lookup into Spark.n
     df_zones = spark.read \
@@ -146,8 +136,14 @@ try:
     # Drop ID columns that are not needed in the report.
     df_zones_revenue = df_zones_revenue.drop('LocationID', 'zone_id')
 
-    # Write the end report to file.
-    df_zones_revenue.coalesce(1).write.parquet(f'{output}/zones', mode='overwrite')
+    # Write the end report to file - disabled for parquet. Enabled for BQ.
+    # df_zones_revenue.coalesce(1).write.parquet(f'{output}/zones', mode='overwrite')
+
+    df_zones_revenue.write \
+        .format("bigquery") \
+        .mode("overwrite") \
+        .option("temporaryGcsBucket", temporaryGcsBucket) \
+        .save(output)
 
 
 finally:
